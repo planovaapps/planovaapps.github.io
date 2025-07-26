@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickPlan – Smart Planning Made Simple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%);
+            --text-gradient: linear-gradient(45deg, #fff, #e0e0e0);
+            --bg-dark-overlay: rgba(0, 0, 0, 0.15);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --text-light: rgba(255, 255, 255, 0.95);
+            --text-lighter: rgba(255, 255, 255, 0.7);
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --shadow-medium: 0 15px 40px rgba(0, 0, 0, 0.3);
+            --shadow-btn-primary: 0 10px 30px rgba(102, 126, 234, 0.4);
+            --shadow-btn-primary-hover: 0 15px 40px rgba(102, 126, 234, 0.6);
+            --border-radius-pill: 50px;
+            --border-radius-card: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            overflow-x: hidden;
+            background: var(--primary-gradient);
+            color: var(--text-light);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 25px; /* Slightly more padding */
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden; /* Ensure particles don't cause scrollbars */
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15); /* Slightly brighter */
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite alternate, fadeOutIn 10s ease-in-out infinite; /* Added fade animation */
+            opacity: 0; /* Start invisible for fade animation */
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); } /* More movement */
+            100% { transform: translateY(0px) rotate(360deg); }
+        }
+
+        @keyframes fadeOutIn {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            padding: 25px 0; /* Increased padding */
+            position: relative;
+            z-index: 10;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px; /* Slightly larger */
+            font-weight: 800; /* Bolder */
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* More refined transition */
+        }
+
+        .logo:hover {
+            transform: scale(1.08); /* More pronounced scale */
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.7); /* Brighter shadow */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px; /* Increased gap */
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-lighter);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500; /* Added font weight */
+        }
+
+        .nav-links a:hover {
+            color: white;
+            transform: translateY(-3px); /* More pronounced hover effect */
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -7px; /* Lower underline */
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease-out; /* Smoother transition */
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 0 100px; /* Adjusted padding */
+            position: relative;
+            overflow: hidden; /* Contains potential overflow from animations */
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 9vw, 6.5rem); /* Min, preferred, max font size */
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent; /* For Firefox */
+            animation: slideInUp 1s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother animation curve */
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Subtle text shadow */
+        }
+
+        .hero p {
+            font-size: 1.55rem; /* Slightly larger text */
+            margin-bottom: 50px; /* Increased margin */
+            opacity: 0.95; /* Slightly less transparent */
+            max-width: 700px; /* Wider text area */
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInUp 1s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s both;
+            font-weight: 300; /* Lighter font weight for body text */
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 25px; /* Increased gap */
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideInUp 1s cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s both;
+        }
+
+        .btn {
+            padding: 16px 40px; /* Increased padding */
+            font-size: 1.15rem; /* Slightly larger font */
+            border: none;
+            border-radius: var(--border-radius-pill);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px; /* Increased gap for icon */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+            position: relative;
+            overflow: hidden;
+            font-weight: 600; /* Bolder button text */
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.25); /* Slightly less transparent */
+            color: white;
+            backdrop-filter: blur(15px); /* Stronger blur */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Stronger border */
+            box-shadow: var(--shadow-btn-primary);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.4); /* More visible on hover */
+            transform: translateY(-5px); /* More pronounced lift */
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.6); /* Stronger border */
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15); /* More visible on hover */
+            transform: translateY(-5px); /* More pronounced lift */
+            border-color: white;
+            box-shadow: var(--shadow-light); /* Added subtle shadow */
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--bg-dark-overlay);
+            backdrop-filter: blur(15px); /* Stronger blur */
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: clamp(2.5rem, 6vw, 4rem); /* Responsive font size */
+            margin-bottom: 70px; /* More space */
+            font-weight: 800;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min-width */
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 45px; /* Increased padding */
+            border-radius: var(--border-radius-card);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px); /* Slightly less blur than section */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* Subtle initial shadow */
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px); /* More pronounced lift */
+            background: rgba(255, 255, 255, 0.12); /* Slightly brighter on hover */
+            box-shadow: var(--shadow-medium); /* Stronger shadow */
+            border-color: rgba(255, 255, 255, 0.4); /* Stronger border on hover */
+        }
+
+        .feature-icon {
+            width: 85px; /* Slightly larger icon */
+            height: 85px; /* Slightly larger icon */
+            background: var(--secondary-gradient); /* New gradient for icons */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px; /* More margin */
+            font-size: 2.2rem; /* Larger icon font size */
+            color: white; /* Ensure icon is white */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 5px 20px rgba(161, 140, 209, 0.5); /* Icon shadow */
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.15) rotate(8deg); /* More pronounced effect */
+            box-shadow: 0 8px 25px rgba(161, 140, 209, 0.7); /* Stronger icon shadow */
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem; /* Slightly larger heading */
+            margin-bottom: 18px; /* More margin */
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px; /* Tighter letter spacing */
+        }
+
+        .feature-card p {
+            font-size: 1.05rem; /* Consistent body text size */
+            color: var(--text-lighter);
+        }
+
+        /* Download Section */
+        .download {
+            padding: 120px 0; /* More padding */
+            text-align: center;
+        }
+
+        .download h2 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 25px;
+            font-weight: 800;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .download p {
+            font-size: 1.3rem; /* Slightly larger */
+            margin-bottom: 50px; /* More margin */
+            opacity: 0.95;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+
+        .download-btn {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 22px 45px; /* Increased padding */
+            font-size: 1.3rem; /* Larger font */
+            border: none;
+            border-radius: var(--border-radius-pill);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow-btn-primary);
+            font-weight: 700;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px); /* More pronounced lift */
+            box-shadow: var(--shadow-btn-primary-hover);
+            filter: brightness(1.1); /* Subtle brightness increase on hover */
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0; /* More padding */
+            background: rgba(0, 0, 0, 0.3); /* Darker footer background */
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Stronger border */
+            font-size: 0.95rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px; /* Increased gap */
+            flex-wrap: wrap;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 35px; /* Increased gap */
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6); /* Slightly more transparent */
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 400;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Scroll Top Button */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: none;
+            background: white;
+            color: #764ba2;
+            border: none;
+            border-radius: 50%;
+            width: 50px; /* Larger button */
+            height: 50px; /* Larger button */
+            font-size: 24px; /* Larger arrow */
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: all 0.3s ease;
+            display: flex; /* Use flex to center arrow */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #scrollTopBtn:hover {
+            background: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px); /* More pronounced slide */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Keep hamburger for mobile if needed, or simplify nav */
+            }
+            
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: clamp(2.8rem, 10vw, 4.5rem);
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 90%; /* Make buttons full width */
+                max-width: 300px;
+                padding: 14px 30px;
+                font-size: 1.05rem;
+            }
+            
+            .features {
+                padding: 70px 0;
+            }
+
+            .features h2 {
+                margin-bottom: 40px;
+            }
+
+            .feature-card {
+                padding: 30px;
+            }
+            
+            .download {
+                padding: 80px 0;
+            }
+
+            .download h2 {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+
+            .download p {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            .download-btn {
+                padding: 18px 35px;
+                font-size: 1.15rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .info-section {
+                padding: 80px 0;
+                background: rgba(0, 0, 0, 0.1); /* Slightly different background to differentiate */
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                text-align: center;
+            }
+
+            .info-section h2 {
+                font-size: clamp(2rem, 5vw, 3.5rem);
+                margin-bottom: 30px;
+                font-weight: 700;
+                background: var(--text-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-fill-color: transparent;
+                text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            }
+
+            .info-section p {
+                font-size: 1.15rem;
+                max-width: 800px;
+                margin: 0 auto 20px;
+                color: var(--text-lighter);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">QuickPlan</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Plan Smart.<br>Live Better.</h1>
+            <p>Take control of your day with <b>QuickPlan</b> – your all-in-one task planner, reminder hub, and productivity partner. Designed for speed, simplicity, and personalization.</p>
+            <div class="cta-buttons">
+                <a href="https://play.google.com/store/apps/details?id=com.yourapp.package" class="btn btn-primary">
+                    <i class="fab fa-android"></i> Download Now
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <i class="fas fa-gem"></i> Explore Features
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Why You'll Love QuickPlan</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Smart Task Management</h3>
+                    <p>Organize your day effortlessly with labels, priorities, and color-coded tags. Your tasks, your way.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Natural Language Input</h3>
+                    <p>Just type “Call mom tomorrow at 5pm” — QuickPlan sets the reminder instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                    <h3>Stunning & Customizable Design</h3>
+                    <p>Minimalist, distraction-free UI with dark mode and 12 vibrant theme colors to suit your mood.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                    <h3>Smart Reminders & Notifications</h3>
+                    <p>Get notified. Snooze or mark tasks done directly from your notification panel.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                    <h3>Multilingual Support</h3>
+                    <p>Available in English, Hindi, and Marathi — because productivity speaks every language.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Calendar View</h3>
+                    <p>Filter tasks by date and stay ahead with a clean, easy-to-navigate calendar screen.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Progress Tracking with Flair</h3>
+                    <p>Track task completion and celebrate progress with a confetti burst. Productivity made fun!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Home Screen Widget</h3>
+                    <p>View and manage tasks right from your home screen — always within reach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="download" id="download">
+        <div class="container">
+            <h2>Ready to Take Control of Your Day?</h2>
+            <p>Join thousands who trust QuickPlan to simplify their schedule and boost productivity — one task at a time.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.yourapp.package" class="download-btn">
+                <i class="fab fa-google-play"></i> Download QuickPlan for Android
+            </a>
+        </div>
+    </section>
+
+    <section class="info-section" id="about">
+        <div class="container">
+            <h2>About QuickPlan</h2>
+            <p>QuickPlan is developed by Planova Studios with a mission to simplify daily planning and boost productivity for everyone. We believe in creating intuitive and powerful tools that help you take control of your time.</p>
+            <p>Our team is dedicated to continuous improvement, bringing you the best features and user experience to help you achieve your goals effortlessly.</p>
+        </div>
+    </section>
+
+    <section class="info-section" id="privacy">
+        <div class="container">
+            <h2>Privacy Policy</h2>
+            <p>At QuickPlan, your privacy is our top priority. This Privacy Policy outlines the types of information we collect, how it is used, and the steps we take to protect your personal data.</p>
+            <p>We do not share your personal information with third parties. All your tasks and data are stored securely on your device, giving you complete control. For more details, please read our full policy.</p>
+        </div>
+    </section>
+
+    <section class="info-section" id="terms">
+        <div class="container">
+            <h2>Terms of Service</h2>
+            <p>Welcome to QuickPlan! By using our application, you agree to comply with and be bound by the following terms and conditions of use. Please review them carefully.</p>
+            <p>These terms govern your use of QuickPlan, including all content, functionality, and services offered. If you do not agree to these terms, you should not use this application.</p>
+        </div>
+    </section>
+
+    <section class="info-section" id="support">
+        <div class="container">
+            <h2>Support</h2>
+            <p>Need help with QuickPlan? Our support team is here to assist you!</p>
+            <p>You can reach us directly via email at <a href="mailto:support@quickplan.com" style="color: white; text-decoration: underline;">support@quickplan.com</a> for any questions, feedback, or issues. We aim to respond to all inquiries within 24-48 hours.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Planova Studio. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 60; // Increased particle count
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = `${Math.random() * 3 + 3}px`; // Randomize size
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's'; // Longer delay range
+                particle.style.animationDuration = (Math.random() * 7 + 7) + 's'; // Longer duration
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll-triggered animations for features (staggered)
+        function animateOnScroll() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach((card, index) => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                const animationDelay = 100 * index; // Staggered delay
+
+                if (cardTop < windowHeight - 100) { // Trigger when card is 100px from bottom of viewport
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, animationDelay);
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Set initial state for scroll animations for feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)'; // More initial displacement
+                card.style.transition = 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)'; // Smoother transition
+            });
+            
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Run once on load to animate already visible elements
+        });
+    </script>
+
+    <button id="scrollTopBtn" style="
+    position: fixed; bottom: 30px; right: 30px; display: none;
+    background: #fff; color: #764ba2; border: none; border-radius: 50%;
+    width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    z-index: 999;">↑</button>
+    <script>
+        const btn = document.getElementById("scrollTopBtn");
+        window.onscroll = () => btn.style.display = window.scrollY > 300 ? "block" : "none";
+        btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+    </script>
+
+</body>
+</html>
