@@ -1,764 +1,727 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickPlan – Smart Planning Made Simple</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%);
-            --text-gradient: linear-gradient(45deg, #fff, #e0e0e0);
-            --bg-dark-overlay: rgba(0, 0, 0, 0.15);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --border-color: rgba(255, 255, 255, 0.2);
-            --text-light: rgba(255, 255, 255, 0.95);
-            --text-lighter: rgba(255, 255, 255, 0.7);
-            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
-            --shadow-medium: 0 15px 40px rgba(0, 0, 0, 0.3);
-            --shadow-btn-primary: 0 10px 30px rgba(102, 126, 234, 0.4);
-            --shadow-btn-primary-hover: 0 15px 40px rgba(102, 126, 234, 0.6);
-            --border-radius-pill: 50px;
-            --border-radius-card: 20px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-            overflow-x: hidden;
-            background: var(--primary-gradient);
-            color: var(--text-light);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 25px; /* Slightly more padding */
-        }
-
-        /* Animated background particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden; /* Ensure particles don't cause scrollbars */
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.15); /* Slightly brighter */
-            border-radius: 50%;
-            animation: float 10s ease-in-out infinite alternate, fadeOutIn 10s ease-in-out infinite; /* Added fade animation */
-            opacity: 0; /* Start invisible for fade animation */
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(180deg); } /* More movement */
-            100% { transform: translateY(0px) rotate(360deg); }
-        }
-
-        @keyframes fadeOutIn {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-
-        /* Header */
-        header {
-            padding: 25px 0; /* Increased padding */
-            position: relative;
-            z-index: 10;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px; /* Slightly larger */
-            font-weight: 800; /* Bolder */
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* More refined transition */
-        }
-
-        .logo:hover {
-            transform: scale(1.08); /* More pronounced scale */
-            text-shadow: 0 0 25px rgba(255, 255, 255, 0.7); /* Brighter shadow */
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 35px; /* Increased gap */
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-lighter);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            font-weight: 500; /* Added font weight */
-        }
-
-        .nav-links a:hover {
-            color: white;
-            transform: translateY(-3px); /* More pronounced hover effect */
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -7px; /* Lower underline */
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: white;
-            transition: width 0.3s ease-out; /* Smoother transition */
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 120px 0 100px; /* Adjusted padding */
-            position: relative;
-            overflow: hidden; /* Contains potential overflow from animations */
-        }
-
-        .hero h1 {
-            font-size: clamp(3.5rem, 9vw, 6.5rem); /* Min, preferred, max font size */
-            font-weight: 800;
-            margin-bottom: 25px;
-            background: var(--text-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent; /* For Firefox */
-            animation: slideInUp 1s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother animation curve */
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Subtle text shadow */
-        }
-
-        .hero p {
-            font-size: 1.55rem; /* Slightly larger text */
-            margin-bottom: 50px; /* Increased margin */
-            opacity: 0.95; /* Slightly less transparent */
-            max-width: 700px; /* Wider text area */
-            margin-left: auto;
-            margin-right: auto;
-            animation: slideInUp 1s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s both;
-            font-weight: 300; /* Lighter font weight for body text */
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 25px; /* Increased gap */
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: slideInUp 1s cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s both;
-        }
-
-        .btn {
-            padding: 16px 40px; /* Increased padding */
-            font-size: 1.15rem; /* Slightly larger font */
-            border: none;
-            border-radius: var(--border-radius-pill);
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px; /* Increased gap for icon */
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
-            position: relative;
-            overflow: hidden;
-            font-weight: 600; /* Bolder button text */
-        }
-
-        .btn-primary {
-            background: rgba(255, 255, 255, 0.25); /* Slightly less transparent */
-            color: white;
-            backdrop-filter: blur(15px); /* Stronger blur */
-            border: 1px solid rgba(255, 255, 255, 0.4); /* Stronger border */
-            box-shadow: var(--shadow-btn-primary);
-        }
-
-        .btn-primary:hover {
-            background: rgba(255, 255, 255, 0.4); /* More visible on hover */
-            transform: translateY(-5px); /* More pronounced lift */
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4); /* Stronger shadow */
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.6); /* Stronger border */
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15); /* More visible on hover */
-            transform: translateY(-5px); /* More pronounced lift */
-            border-color: white;
-            box-shadow: var(--shadow-light); /* Added subtle shadow */
-        }
-
-        /* Features Section */
-        .features {
-            padding: 100px 0;
-            background: var(--bg-dark-overlay);
-            backdrop-filter: blur(15px); /* Stronger blur */
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: clamp(2.5rem, 6vw, 4rem); /* Responsive font size */
-            margin-bottom: 70px; /* More space */
-            font-weight: 800;
-            background: var(--text-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min-width */
-            gap: 40px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            padding: 45px; /* Increased padding */
-            border-radius: var(--border-radius-card);
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(12px); /* Slightly less blur than section */
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* Subtle initial shadow */
-        }
-
-        .feature-card:hover {
-            transform: translateY(-15px); /* More pronounced lift */
-            background: rgba(255, 255, 255, 0.12); /* Slightly brighter on hover */
-            box-shadow: var(--shadow-medium); /* Stronger shadow */
-            border-color: rgba(255, 255, 255, 0.4); /* Stronger border on hover */
-        }
-
-        .feature-icon {
-            width: 85px; /* Slightly larger icon */
-            height: 85px; /* Slightly larger icon */
-            background: var(--secondary-gradient); /* New gradient for icons */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px; /* More margin */
-            font-size: 2.2rem; /* Larger icon font size */
-            color: white; /* Ensure icon is white */
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 5px 20px rgba(161, 140, 209, 0.5); /* Icon shadow */
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.15) rotate(8deg); /* More pronounced effect */
-            box-shadow: 0 8px 25px rgba(161, 140, 209, 0.7); /* Stronger icon shadow */
-        }
-
-        .feature-card h3 {
-            font-size: 1.6rem; /* Slightly larger heading */
-            margin-bottom: 18px; /* More margin */
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.5px; /* Tighter letter spacing */
-        }
-
-        .feature-card p {
-            font-size: 1.05rem; /* Consistent body text size */
-            color: var(--text-lighter);
-        }
-
-        /* Download Section */
-        .download {
-            padding: 120px 0; /* More padding */
-            text-align: center;
-        }
-
-        .download h2 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            margin-bottom: 25px;
-            font-weight: 800;
-            background: var(--text-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-
-        .download p {
-            font-size: 1.3rem; /* Slightly larger */
-            margin-bottom: 50px; /* More margin */
-            opacity: 0.95;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 300;
-        }
-
-        .download-btn {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 22px 45px; /* Increased padding */
-            font-size: 1.3rem; /* Larger font */
-            border: none;
-            border-radius: var(--border-radius-pill);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: var(--shadow-btn-primary);
-            font-weight: 700;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-5px); /* More pronounced lift */
-            box-shadow: var(--shadow-btn-primary-hover);
-            filter: brightness(1.1); /* Subtle brightness increase on hover */
-        }
-
-        /* Footer */
-        footer {
-            padding: 60px 0; /* More padding */
-            background: rgba(0, 0, 0, 0.3); /* Darker footer background */
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Stronger border */
-            font-size: 0.95rem;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px; /* Increased gap */
-            flex-wrap: wrap;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 35px; /* Increased gap */
-            list-style: none;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.6); /* Slightly more transparent */
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 400;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        /* Scroll Top Button */
-        #scrollTopBtn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: none;
-            background: white;
-            color: #764ba2;
-            border: none;
-            border-radius: 50%;
-            width: 50px; /* Larger button */
-            height: 50px; /* Larger button */
-            font-size: 24px; /* Larger arrow */
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 999;
-            transition: all 0.3s ease;
-            display: flex; /* Use flex to center arrow */
-            justify-content: center;
-            align-items: center;
-        }
-
-        #scrollTopBtn:hover {
-            background: #f0f0f0;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Animations */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px); /* More pronounced slide */
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none; /* Keep hamburger for mobile if needed, or simplify nav */
-            }
-            
-            .hero {
-                padding: 80px 0 60px;
-            }
-
-            .hero h1 {
-                font-size: clamp(2.8rem, 10vw, 4.5rem);
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-                margin-bottom: 30px;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .btn {
-                width: 90%; /* Make buttons full width */
-                max-width: 300px;
-                padding: 14px 30px;
-                font-size: 1.05rem;
-            }
-            
-            .features {
-                padding: 70px 0;
-            }
-
-            .features h2 {
-                margin-bottom: 40px;
-            }
-
-            .feature-card {
-                padding: 30px;
-            }
-            
-            .download {
-                padding: 80px 0;
-            }
-
-            .download h2 {
-                font-size: clamp(2rem, 8vw, 3rem);
-            }
-
-            .download p {
-                font-size: 1.1rem;
-                margin-bottom: 30px;
-            }
-
-            .download-btn {
-                padding: 18px 35px;
-                font-size: 1.15rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .info-section {
-                padding: 80px 0;
-                background: rgba(0, 0, 0, 0.1); /* Slightly different background to differentiate */
-                backdrop-filter: blur(10px);
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                text-align: center;
-            }
-
-            .info-section h2 {
-                font-size: clamp(2rem, 5vw, 3.5rem);
-                margin-bottom: 30px;
-                font-weight: 700;
-                background: var(--text-gradient);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                text-fill-color: transparent;
-                text-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            }
-
-            .info-section p {
-                font-size: 1.15rem;
-                max-width: 800px;
-                margin: 0 auto 20px;
-                color: var(--text-lighter);
-            }
-        }
-    </style>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="QuickPlan is your all-in-one task planner, reminder, and note-taking companion with privacy-first design." name="description"/>
+  <title>
+    QuickPlan – Smart Planning Made Simple
+  </title>
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js">
+  </script>
+  <link href="css/styles.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
 
-    <header>
-        <nav class="container">
-            <a href="#" class="logo">QuickPlan</a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#download">Download</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-        </nav>
-    </header>
+<!-- Particles Background -->
+<div class="particles" id="particles">
+</div>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Plan Smart.<br>Live Better.</h1>
-            <p>Take control of your day with <b>QuickPlan</b> – your all-in-one task planner, reminder hub, and productivity partner. Designed for speed, simplicity, and personalization.</p>
-            <div class="cta-buttons">
-                <a href="https://play.google.com/store/apps/details?id=com.yourapp.package" class="btn btn-primary">
-                    <i class="fab fa-android"></i> Download Now
-                </a>
-                <a href="#features" class="btn btn-secondary">
-                    <i class="fas fa-gem"></i> Explore Features
-                </a>
-            </div>
+<!-- Header -->
+<header>
+  <div class="container">
+    <div class="header-content">
+      <a aria-label="QuickPlan home" class="brand" href="#">
+        <div class="logo">
+          <img alt="App Logo" src="img/ic_launcher-playstore.png" style="width:100%; border-radius:16px;"/>
         </div>
-    </section>
-
-    <section class="features" id="features">
-        <div class="container">
-            <h2>Why You'll Love QuickPlan</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
-                    <h3>Smart Task Management</h3>
-                    <p>Organize your day effortlessly with labels, priorities, and color-coded tags. Your tasks, your way.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Natural Language Input</h3>
-                    <p>Just type “Call mom tomorrow at 5pm” — QuickPlan sets the reminder instantly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-palette"></i></div>
-                    <h3>Stunning & Customizable Design</h3>
-                    <p>Minimalist, distraction-free UI with dark mode and 12 vibrant theme colors to suit your mood.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
-                    <h3>Smart Reminders & Notifications</h3>
-                    <p>Get notified. Snooze or mark tasks done directly from your notification panel.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-globe"></i></div>
-                    <h3>Multilingual Support</h3>
-                    <p>Available in English, Hindi, and Marathi — because productivity speaks every language.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <h3>Calendar View</h3>
-                    <p>Filter tasks by date and stay ahead with a clean, easy-to-navigate calendar screen.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3>Progress Tracking with Flair</h3>
-                    <p>Track task completion and celebrate progress with a confetti burst. Productivity made fun!</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
-                    <h3>Home Screen Widget</h3>
-                    <p>View and manage tasks right from your home screen — always within reach.</p>
-                </div>
-            </div>
+        <div class="brand-text">
+          <h1>
+            QuickPlan
+          </h1>
+          <div class="brand-tagline">
+            Plan Smarter · Live Better
+          </div>
         </div>
-    </section>
+      </a>
+      <nav aria-label="Primary navigation">
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#notes">What's New</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+<main>
 
-    <section class="download" id="download">
-        <div class="container">
-            <h2>Ready to Take Control of Your Day?</h2>
-            <p>Join thousands who trust QuickPlan to simplify their schedule and boost productivity — one task at a time.</p>
-            <a href="https://play.google.com/store/apps/details?id=com.yourapp.package" class="download-btn">
-                <i class="fab fa-google-play"></i> Download QuickPlan for Android
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h2>
+          Plan Smarter.
+          <br/>
+          Live Better.
+        </h2>
+        <p>
+          QuickPlan is your all-in-one task planner, reminder hub, and lightweight note-taking companion. Fast, private by design, and crafted for daily flow.
+        </p>
+        <div class="cta-buttons">
+          <a aria-label="Download on Play Store" class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.shaun.quickplan">
+            <i class="fab fa-google-play">
+            </i>
+            Download for Android
+          </a>
+          <a class="btn btn-secondary" href="#features">
+            <i class="fas fa-star">
+            </i>
+            Explore Features
+          </a>
+        </div>
+        <div class="update-notice">
+          <div class="icon">
+            <i class="fas fa-sparkles">
+            </i>
+          </div>
+          <div class="update-content">
+            <h4>
+              Recent Update Available
+            </h4>
+            <p>
+              Notes with rich-text toolbar, wallpaper picker, daily summary notifications, sketches and export capabilities are now live.
+            </p>
+          </div>
+          <a class="btn btn-primary" href="#notes">
+            See What's New
+          </a>
+        </div>
+        <div class="app-preview">
+          <div class="phone-mockup">
+            <img alt="Infinite Customization Promo" src="img/infinite_customization_promo.png" style="width:100%; border-radius:12px;"/>
+          </div>
+          <div class="phone-mockup">
+            <img alt="Notescreen Promo" src="img/notescreen_promo.png" style="width:100%; border-radius:12px;"/>
+          </div>
+          <div class="phone-mockup">
+            <img alt="Task Analytics Promo" src="img/task_analytics_promo.png" style="width:100%; border-radius:12px;"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          Why You'll Love QuickPlan
+        </h2>
+        <p class="section-subtitle">
+          Private • Local Storage • Lightweight • Powerful
+        </p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-bullseye">
+            </i>
+          </div>
+          <h3>
+            Smart Task Management
+          </h3>
+          <p>
+            Organize tasks with labels, priorities, and color-coded tags. Fast to create, simple to manage, powerful to use. Track task completion and celebrate progress with a confetti burst. Productivity made fun!
+          </p>
+        </div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-brain">
+            </i>
+          </div>
+          <h3>
+            Natural Language Input
+          </h3>
+          <p>
+            Type things like "Call Sam tomorrow at 6pm" and QuickPlan will intelligently schedule it for you.
+          </p>
+        </div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-palette">
+            </i>
+          </div>
+          <h3>
+            Custom Themes &amp; Wallpapers
+          </h3>
+          <p>
+            Switch between solid colors and dynamic wallpapers. Use the infinite color picker for precise control.
+          </p>
+        </div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-bell">
+            </i>
+          </div>
+          <h3>
+            Interactive Notifications
+          </h3>
+          <p>
+            Mark tasks done or snooze directly from the notification shade. No need to open the app.
+          </p>
+        </div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-language">
+            </i>
+          </div>
+          <h3>
+            Multilingual Support
+          </h3>
+          <p>
+            Full support for English, Hindi, and Marathi with more languages coming soon.
+          </p>
+        </div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-alt">
+            </i>
+          </div>
+          <h3>
+            Calendar &amp; Widgets
+          </h3>
+          <p>
+            Full calendar view with smart filters and home screen widgets for quick access to today's tasks.
+          </p>
+        </div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <i class="fas fa-pencil-alt"></i>
+          </div>
+          <h3>Sketch & Doodle</h3>
+          <p>Capture your thoughts visually with the built-in Sketch Screen. Draw freely and export your sketches directly to the gallery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notes Section -->
+  <section class="notes-section" id="notes">
+    <div class="container">
+      <div class="notes-grid">
+        <div>
+          <div class="section-header" style="text-align: left; margin-bottom: 40px;">
+            <h2 class="section-title">
+              New: Rich Notes &amp; Export
+            </h2>
+            <p style="color: var(--text-muted); font-size: 18px;">
+              We added a powerful rich-text note editor with export capabilities, so you keep full control of your data.
+            </p>
+          </div>
+          <div class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3 style="margin: 0;">
+                Quick Note Editor
+              </h3>
+              <div style="color: var(--text-soft); font-size: 12px;">
+                Local Storage • Private
+              </div>
+            </div>
+            <div class="editor-toolbar">
+              <button class="toolbar-btn" data-cmd="bold" title="Bold">
+                <i class="fas fa-bold">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="italic" title="Italic">
+                <i class="fas fa-italic">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="underline" title="Underline">
+                <i class="fas fa-underline">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="formatBlock" data-val="h3" title="Heading">
+                <i class="fas fa-heading">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="insertUnorderedList" title="Bullet List">
+                <i class="fas fa-list-ul">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="insertOrderedList" title="Numbered List">
+                <i class="fas fa-list-ol">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="undo" title="Undo">
+                <i class="fas fa-undo">
+                </i>
+              </button>
+              <button class="toolbar-btn" data-cmd="redo" title="Redo">
+                <i class="fas fa-redo">
+                </i>
+              </button>
+              <button class="toolbar-btn" id="clear-note" title="Clear">
+                <i class="fas fa-trash">
+                </i>
+              </button>
+            </div>
+            <div class="editor" contenteditable="true" id="editor" spellcheck="true">
+              Start typing your notes here... All content is saved locally on your device.
+            </div>
+            <div class="editor-controls">
+              <div class="input-group">
+                <label>
+                  Title:
+                </label>
+                <input id="note-title" placeholder="My Note" type="text"/>
+              </div>
+              <button class="btn btn-secondary" id="save-note">
+                <i class="fas fa-save">
+                </i>
+                Save Note
+              </button>
+              <button class="btn btn-primary" id="export-json">
+                <i class="fas fa-download">
+                </i>
+                Export JSON
+              </button>
+              <button class="btn btn-secondary" id="export-txt">
+                <i class="fas fa-file-alt">
+                </i>
+                Export TXT
+              </button>
+              <div style="margin-left: auto; color: var(--text-soft); font-size: 13px;">
+          <span id="notes-count">
+           0 saved notes
+          </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section class="download-section" id="download">
+    <div class="container">
+      <div class="download-card">
+        <h3>
+          Ready to Get Organized?
+        </h3>
+        <p>
+          Download QuickPlan and enjoy focused planning with privacy-first design. Available now on Android.
+        </p>
+        <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.shaun.quickplan">
+          <i class="fab fa-google-play">
+          </i>
+          Download QuickPlan
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="legal-section" id="about">
+    <div class="container">
+      <div class="legal-content">
+        <h3>
+          About QuickPlan
+        </h3>
+        <p>
+          QuickPlan is developed by Planova with a mission to simplify daily planning and boost productivity for everyone. We believe in creating intuitive and powerful tools that help you take control of your time.
+        </p>
+        <p>
+          Our team is dedicated to continuous improvement, bringing you the best features and user experience to help you achieve your goals effortlessly. Privacy and user control are at the heart of everything we build.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legal Sections -->
+  <section class="legal-section">
+    <div class="container">
+      <div class="legal-content">
+        <div id="privacy" style="margin-bottom: 40px;">
+          <h3>
+            Privacy Policy
+          </h3>
+          <h4>
+            Introduction
+          </h4>
+          <p>
+            This Privacy Policy describes how QuickPlan ("we", "us", or "our") collects, uses, and protects your information when you use our mobile application (the "Service"). We are committed to protecting your privacy and ensuring transparency in our data practices.
+          </p>
+          <h4>
+            Information We Collect
+          </h4>
+          <p>
+            We take a privacy-first approach and do not collect, store, or transmit any personally identifiable information ("PII") from your device. All your data, including but not limited to tasks, notes, schedules, and preferences, remains stored locally on your device and is not transmitted to our servers or any third parties.
+          </p>
+          <h4>
+            Third-Party Services
+          </h4>
+          <p>
+            Our application may contain third-party services such as advertising networks or analytics providers. These third parties may collect certain technical information including device identifiers, usage patterns, and app performance metrics in accordance with their respective privacy policies. We do not control the data collection practices of these third parties and encourage you to review their privacy policies.
+          </p>
+          <h4>
+            How We Use Your Information
+          </h4>
+          <p>
+            Since we do not collect personal data, we cannot and do not use your personal information for any purpose. Any data you create within the application remains under your exclusive control and is processed locally on your device for the sole purpose of providing the intended functionality of the Service.
+          </p>
+          <h4>
+            Information Sharing and Disclosure
+          </h4>
+          <p>
+            We do not sell, trade, rent, or otherwise transfer your personal information to third parties. As we do not collect personal data, there is no personal information to share. We may share anonymized, aggregated data that cannot be used to identify you for the purpose of improving our services.
+          </p>
+          <h4>
+            Data Security
+          </h4>
+          <p>
+            We implement appropriate technical and organizational security measures to protect against unauthorized access, alteration, disclosure, or destruction of data. However, as your data remains locally stored on your device, you are responsible for maintaining the security of your device and any backup systems you may use.
+          </p>
+          <h4>
+            Contact Us
+          </h4>
+          <p>
+            If you have any questions or concerns about this Privacy Policy, please contact us through the support section of the app or email us at
+            <a href="mailto:planovaapps@gmail.com">
+              planovaapps@gmail.com
             </a>
+            .
+          </p>
         </div>
-    </section>
-
-    <section class="info-section" id="about">
-        <div class="container">
-            <h2>About QuickPlan</h2>
-            <p>QuickPlan is developed by Planova with a mission to simplify daily planning and boost productivity for everyone. We believe in creating intuitive and powerful tools that help you take control of your time.</p>
-            <p>Our team is dedicated to continuous improvement, bringing you the best features and user experience to help you achieve your goals effortlessly.</p>
+        <div id="terms" style="margin-bottom: 40px;">
+          <h3>
+            Terms of Service
+          </h3>
+          <p>
+            Welcome to QuickPlan! By using our application, you agree to comply with and be bound by the following terms and conditions of use. Please review them carefully.
+          </p>
+          <p>
+            These terms govern your use of QuickPlan, including all content, functionality, and services offered. If you do not agree to these terms, you should not use this application.
+          </p>
         </div>
-    </section>
-
-    <section class="info-section" id="privacy">
-        <div class="container">
-            <h2>Privacy Policy</h2>
-
-            <h3>Introduction</h3>
-            <p>This Privacy Policy describes how QuickPlan ("we", "us", or "our") collects, uses, and protects your information when you use our mobile application (the "Service"). We are committed to protecting your privacy and ensuring transparency in our data practices.</p>
-
-            <h3>Information We Collect</h3>
-            <p>We take a privacy-first approach and do not collect, store, or transmit any personally identifiable information ("PII") from your device. All your data, including but not limited to tasks, notes, schedules, and preferences, remains stored locally on your device and is not transmitted to our servers or any third parties.</p>
-
-            <h3>Third-Party Services</h3>
-            <p>Our application may contain third-party services such as advertising networks or analytics providers. These third parties may collect certain technical information including device identifiers, usage patterns, and app performance metrics in accordance with their respective privacy policies. We do not control the data collection practices of these third parties and encourage you to review their privacy policies.</p>
-
-            <h3>How We Use Your Information</h3>
-            <p>Since we do not collect personal data, we cannot and do not use your personal information for any purpose. Any data you create within the application remains under your exclusive control and is processed locally on your device for the sole purpose of providing the intended functionality of the Service.</p>
-
-            <h3>Information Sharing and Disclosure</h3>
-            <p>We do not sell, trade, rent, or otherwise transfer your personal information to third parties. As we do not collect personal data, there is no personal information to share. We may share anonymized, aggregated data that cannot be used to identify you for the purpose of improving our services.</p>
-            <p>We may integrate third-party tools such as Google AdMob or Firebase solely for app analytics, crash reporting, or advertising. These tools may collect non-personal, anonymized technical data (such as app version or device type) to improve performance and stability.</p>
-
-            <h3>Data Security</h3>
-            <p>We implement appropriate technical and organizational security measures to protect against unauthorized access, alteration, disclosure, or destruction of data. However, as your data remains locally stored on your device, you are responsible for maintaining the security of your device and any backup systems you may use.</p>
-
-            <h3>Your Privacy Rights</h3>
-            <p>You have the right to access, modify, or delete any data stored within the application at any time through the app's interface. Since all data is stored locally, uninstalling the application will remove all associated data from your device. You may also contact us regarding any privacy concerns or questions.</p>
-
-            <h3>Children's Privacy</h3>
-            <p>Our Service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us so we can take appropriate action.</p>
-
-            <h3>Changes to This Privacy Policy</h3>
-            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy within the application. Changes become effective immediately upon posting. Your continued use of the Service after any modifications constitutes acceptance of the updated Privacy Policy.</p>
-
-            <h3>Contact Us</h3>
-            <p>If you have any questions or concerns about this Privacy Policy, please contact us through the support section of the app or visit our website. We will respond promptly to all reasonable inquiries.</p>
+        <div id="support">
+          <h3>
+            Support
+          </h3>
+          <p>
+            Need help with QuickPlan? Our support team is here to assist you!
+          </p>
+          <p>
+            You can reach us directly via email at
+            <a href="mailto:planovaapps@gmail.com" style="color: white; text-decoration: underline;">
+              Support QuickPlan
+            </a>
+            for any questions, feedback, or issues. We aim to respond to all inquiries within 24-48 hours.
+          </p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+</main>
 
-    <section class="info-section" id="terms">
-        <div class="container">
-            <h2>Terms of Service</h2>
-            <p>Welcome to QuickPlan! By using our application, you agree to comply with and be bound by the following terms and conditions of use. Please review them carefully.</p>
-            <p>These terms govern your use of QuickPlan, including all content, functionality, and services offered. If you do not agree to these terms, you should not use this application.</p>
-        </div>
-    </section>
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <p>
+          © 2025 Planova. All rights reserved.
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="#privacy">
+          Privacy
+        </a>
+        <a href="#terms">
+          Terms
+        </a>
+        <a href="#support">
+          Support
+        </a>
+        <a href="https://planovaapps.github.io/delete-data.html">
+          Delete Data
+        </a>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>
+        Built with ❤️ for better productivity
+      </p>
+    </div>
+  </div>
+</footer>
 
-    <section class="info-section" id="support">
-        <div class="container">
-            <h2>Support</h2>
-            <p>Need help with QuickPlan? Our support team is here to assist you!</p>
-            <p>You can reach us directly via email at <a href="mailto:planovaapps@gmail.com" style="color: white; text-decoration: underline;">Support QuickPlan</a> for any questions, feedback, or issues. We aim to respond to all inquiries within 24-48 hours.</p>
-        </div>
-    </section>
+<!-- Scroll to Top Button -->
+<button aria-label="Scroll to top" class="scroll-top" id="scrollTopBtn">
+  <i class="fas fa-chevron-up">
+  </i>
+</button>
+<script>
+  // Particles System
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 50;
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 Planova. All rights reserved.</p>
-                <ul class="footer-links">
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Service</a></li>
-                    <li><a href="#support">Support</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
 
-    <script>
-        // Create animated particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 60; // Increased particle count
+      // Random size between 2-6px
+      const size = Math.random() * 4 + 2;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.width = `${Math.random() * 3 + 3}px`; // Randomize size
-                particle.style.height = particle.style.width;
-                particle.style.animationDelay = Math.random() * 8 + 's'; // Longer delay range
-                particle.style.animationDuration = (Math.random() * 7 + 7) + 's'; // Longer duration
-                particlesContainer.appendChild(particle);
-            }
-        }
+      // Random starting position
+      particle.style.left = Math.random() * 100 + '%';
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+      // Random animation delay and duration
+      particle.style.animationDelay = Math.random() * 15 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+
+      particlesContainer.appendChild(particle);
+    }
+  }
+
+  // Note Editor Functionality
+  function initializeNoteEditor() {
+    const editor = document.getElementById('editor');
+    const toolbarButtons = document.querySelectorAll('.toolbar-btn[data-cmd]');
+
+    toolbarButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cmd = btn.dataset.cmd;
+        const val = btn.dataset.val || null;
+        document.execCommand(cmd, false, val);
+        editor.focus();
+      });
+    });
+
+    document.getElementById('clear-note').addEventListener('click', () => {
+      if (confirm('Clear the note content?')) {
+        editor.innerHTML = 'Start typing your notes here...';
+      }
+    });
+  }
+
+  // Local Storage for Notes
+  const NOTES_KEY = 'quickplan_notes_v2';
+
+  function loadNotes() {
+    try {
+      const notes = localStorage.getItem(NOTES_KEY);
+      return notes ? JSON.parse(notes) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveNote() {
+    const title = document.getElementById('note-title').value.trim() || 'Untitled Note';
+    const content = document.getElementById('editor').innerHTML;
+    const timestamp = new Date().toISOString();
+
+    const notes = loadNotes();
+    notes.unshift({ title, content, timestamp });
+
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    updateNotesCount();
+
+    // Show success message
+    showNotification('Note saved successfully!', 'success');
+  }
+
+  function updateNotesCount() {
+    const count = loadNotes().length;
+    document.getElementById('notes-count').textContent = `${count} saved notes`;
+  }
+
+  // File Export Functions
+  function downloadFile(filename, content, type = 'text/plain') {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportAsJSON() {
+    const title = document.getElementById('note-title').value.trim() || 'note';
+    const content = document.getElementById('editor').innerHTML;
+    const data = {
+      title,
+      content,
+      exportedAt: new Date().toISOString()
+    };
+
+    const filename = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.json';
+    downloadFile(filename, JSON.stringify(data, null, 2), 'application/json');
+    showNotification('Note exported as JSON!', 'success');
+  }
+
+  function exportAsText() {
+    const title = document.getElementById('note-title').value.trim() || 'note';
+    const content = document.getElementById('editor').innerText || '';
+    const filename = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.txt';
+
+    downloadFile(filename, content, 'text/plain');
+    showNotification('Note exported as text!', 'success');
+  }
+
+  // Notification System
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #3b82f6, #1d4ed8)'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        z-index: 10000;
+        font-weight: 600;
+        backdrop-filter: blur(20px);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+      `;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Animate in
+    setTimeout(() => {
+      notification.style.transform = 'translateX(0)';
+    }, 100);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.style.transform = 'translateX(400px)';
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 300);
+    }, 3000);
+  }
+
+  // Smooth Scrolling for Navigation
+  function initializeSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href === '#') return;
+
+        const target = document.querySelector(href);
+        if (!target) return;
+
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
+      });
+    });
+  }
 
-        // Add scroll-triggered animations for features (staggered)
-        function animateOnScroll() {
-            const featureCards = document.querySelectorAll('.feature-card');
-            featureCards.forEach((card, index) => {
-                const cardTop = card.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                const animationDelay = 100 * index; // Staggered delay
+  // Scroll to Top Button
+  function initializeScrollToTop() {
+    const scrollBtn = document.getElementById('scrollTopBtn');
 
-                if (cardTop < windowHeight - 100) { // Trigger when card is 100px from bottom of viewport
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, animationDelay);
-                }
-            });
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.add('visible');
+      } else {
+        scrollBtn.classList.remove('visible');
+      }
+    });
+
+    scrollBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  // Auto-save Draft
+  function initializeAutoSave() {
+    const editor = document.getElementById('editor');
+    const titleInput = document.getElementById('note-title');
+    let saveTimeout;
+
+    function saveDraft() {
+      const draft = {
+        title: titleInput.value,
+        content: editor.innerHTML,
+        timestamp: Date.now()
+      };
+      localStorage.setItem('quickplan_draft', JSON.stringify(draft));
+    }
+
+    function onInput() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(saveDraft, 1000);
+    }
+
+    editor.addEventListener('input', onInput);
+    titleInput.addEventListener('input', onInput);
+
+    // Load draft on page load
+    try {
+      const draft = JSON.parse(localStorage.getItem('quickplan_draft') || 'null');
+      if (draft && draft.content && Date.now() - draft.timestamp < 86400000) { // 24 hours
+        if (confirm('Would you like to restore your unsaved draft?')) {
+          editor.innerHTML = draft.content;
+          titleInput.value = draft.title || '';
         }
+      }
+    } catch (e) {
+      // Ignore errors
+    }
+  }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            
-            // Set initial state for scroll animations for feature cards
-            document.querySelectorAll('.feature-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(50px)'; // More initial displacement
-                card.style.transition = 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)'; // Smoother transition
-            });
-            
-            window.addEventListener('scroll', animateOnScroll);
-            animateOnScroll(); // Run once on load to animate already visible elements
-        });
-    </script>
+  // Keyboard Shortcuts
+  function initializeKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveNote();
+      }
+    });
+  }
 
-    <button id="scrollTopBtn" style="
-    position: fixed; bottom: 30px; right: 30px; display: none;
-    background: #fff; color: #764ba2; border: none; border-radius: 50%;
-    width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    z-index: 999;">↑</button>
-    <script>
-        const btn = document.getElementById("scrollTopBtn");
-        window.onscroll = () => btn.style.display = window.scrollY > 300 ? "block" : "none";
-        btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-    </script>
+  // Initialize everything when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    initializeNoteEditor();
+    initializeSmoothScrolling();
+    initializeScrollToTop();
+    initializeAutoSave();
+    initializeKeyboardShortcuts();
+    updateNotesCount();
+    AOS.init({ duration: 1000, once: true });
 
+    // Event listeners for export buttons
+    document.getElementById('save-note').addEventListener('click', saveNote);
+    document.getElementById('export-json').addEventListener('click', exportAsJSON);
+    document.getElementById('export-txt').addEventListener('click', exportAsText);
+  });
+
+  // Handle resize for better mobile experience
+  window.addEventListener('resize', () => {
+    // Recreate particles on significant resize
+    if (Math.abs(window.innerWidth - (window.lastWidth || window.innerWidth)) > 200) {
+      const particles = document.getElementById('particles');
+      particles.innerHTML = '';
+      createParticles();
+      window.lastWidth = window.innerWidth;
+    }
+  });
+</script>
 </body>
 </html>
