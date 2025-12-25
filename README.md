@@ -14,13 +14,12 @@ This repository hosts the official **QuickPlan website**, showcasing features, u
 
 <div style="display:flex;">
 
-- 🧭 Smooth navigation with scroll animations
-- 🎨 Modern UI theme with glass surfaces.
-- 📱 App preview + Play Store install CTA
-- 📝 Rich Notes editor demo with export support
-- 📂 Privacy Policy, Terms of Service & Support section
-- 🔧 Automatic particle background and shimmer effects
-- 🌐 Fully responsive layout (mobile + tablet + desktop)
+- Smooth navigation with scroll animations
+- Modern UI theme with glass surfaces.
+- App preview + Play Store install CTA
+- Privacy Policy, Terms of Service & Support section
+- Automatic particle background and shimmer effects
+- Fully responsive layout (mobile + tablet + desktop)
 
 </div>
 
@@ -30,7 +29,7 @@ Install
 
 <a href="https://play.google.com/store/apps/details?id=com.shaun.quickplan">
     <img alt="Get it on Google Play" height="80"
-        src="img/google-badge.png" /></a>
+        src="img/google-play-badge.svg" /></a>
 
 </div>
 
