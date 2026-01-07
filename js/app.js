@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createParticles();
 });
 
-// Optional: Recreate on resize (debounced)
+// Recreate on resize (debounced)
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);

@@ -33,9 +33,9 @@ Install
 
 </div>
 
-## 🛠️ Development
+## Development
 
-### 🔧 Edit Locally
+### Edit Locally
 Clone the repo:
 
 ```bash

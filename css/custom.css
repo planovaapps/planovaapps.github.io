@@ -1,37 +1,5 @@
 /* custom.css */
 
-/* ===== Anti Copy CSS Layer ===== */
-
-/* Disable text selection */
-body {
-  -webkit-user-select: none; /* Chrome, Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE/Edge */
-  user-select: none;
-}
-
-/* Disable image dragging */
-img {
-  pointer-events: none;
-  -webkit-user-drag: none;
-}
-
-/* Remove text cursor (I-beam) */
-p, h1, h2, h3, h4, h5, h6, span, li, a {
-  cursor: default;
-}
-
-/* Allow clicking buttons & inputs normally */
-button,
-input,
-textarea,
-select,
-label {
-  user-select: text;
-  cursor: text;
-  pointer-events: auto;
-}
-
 /* Translucent navbar */
 #mainNav {
   background-color: rgba(255, 255, 255, 0.85) !important;
